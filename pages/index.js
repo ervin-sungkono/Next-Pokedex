@@ -6,7 +6,7 @@ export default function Home({pokemons}) {
 
     function showRandomPokemon(){
         const idx = Math.floor(Math.random() * pokemons.length)
-        router.push(`pokemon/${pokemons[idx].name}`)
+        router.push(`/pokemon/${pokemons[idx].name}`)
     }
     return (
         <>

@@ -8,6 +8,11 @@ import { useRouter } from 'next/router';
 export default function Layout({title, children}){
     const router = useRouter();
     const activeLink = (url, pathname) => pathname === url ? "nav-link active" : "nav-link";
+
+    const searchPokemon = () => {
+        const query = document.getElementById('search').value
+        router.push(`/pokemon/${query.toLowerCase()}`)
+    }
     return(
         <>
             <Head>
@@ -28,11 +33,12 @@ export default function Layout({title, children}){
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <Link class={`${activeLink('/', router.pathname)}`} aria-current="page" href="/">Home</Link>
                             <Link class={`${activeLink('/pokemon', router.pathname)}`} aria-current="page" href="/pokemon">Pokemon</Link>
+                            <Link class={`${activeLink('/items', router.pathname)}`} aria-current="page" href="/items">Items</Link>
                         </ul>
                         <div className="row">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Pokemon name or id"/>
-                                <button class="btn btn-outline-warning" type="button" id="search-btn">Search</button>
+                                <input type="text" class="form-control" placeholder="Enter pokemon name" id='search'/>
+                                <button class="btn btn-outline-warning" type="button" id="search-btn" onClick={() => searchPokemon()}>Search</button>
                             </div>
                         </div>
                     </div>

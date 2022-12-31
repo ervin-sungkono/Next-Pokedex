@@ -85,14 +85,14 @@ a{
     background-color: rgb(15, 17, 57);
 }
 
-.card{
+.card.poke-card{
     transition: 0.5s transform ease-in-out;
 }
 
-.card:hover{
+.card.poke-card:hover{
     transform: translateY(-16px);
 }
 
-.card:hover .card-img-top{
+.card.poke-card:hover .card-img-top{
     background-color: rgb(203, 43, 43)!important;
 }

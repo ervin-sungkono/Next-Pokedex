@@ -19,12 +19,12 @@ export default function PokemonPage({pokemons}){
     return (
         <>
             <Layout title = "Pokemon List">
-                <div className="container">
+                <div className="container min-vh-100 d-flex flex-column">
                     <h1 className="text-center text-white mb-4">All Pokemon List</h1>
-                    <div className="d-flex flex-wrap justify-content-center gap-4">
+                    <div className="d-flex flex-wrap justify-content-center gap-4 flex-grow-1">
                         {paginatedPokemons.map((pokemon, index) => (
                             <Link href={"pokemon/" + pokemon.name}>
-                                <div class="card shadow rounded" style={{width:"clamp(15rem, 60vw, 18rem)"}} key={index}>
+                                <div class="card poke-card shadow rounded" style={{width:"clamp(15rem, 60vw, 18rem)"}} key={index}>
                                     <PokemonCard pokemon = {pokemon}/>
                                 </div>
                             </Link>
