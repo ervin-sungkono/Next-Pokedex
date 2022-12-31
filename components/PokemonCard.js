@@ -2,7 +2,7 @@
 export default function PokemonCard({pokemon}){
     return(
         <>
-            <img src={pokemon.sprites.other["official-artwork"].front_default} class="card-img-top" alt="..."/>
+            <img src={pokemon.sprites.other["official-artwork"].front_default} class="card-img-top bg-secondary" alt="..."/>
             <div class="card-body d-flex flex-column align-items-center">
                 <h5 class="card-title fw-bold text-dark">{pokemon.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</h5>
                 <p className="card-text text-muted">{`#${Math.floor(pokemon.id/100)}${Math.floor(pokemon.id/10 % 10)}${pokemon.id%10}`}</p>
