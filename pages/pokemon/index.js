@@ -42,7 +42,7 @@ export default function PokemonPage({pokemons}){
 }
 
 async function getPokemonList(){
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=100")
+    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1154")
     const {results} = await res.json()
     return results
 }

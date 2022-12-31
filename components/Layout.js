@@ -33,7 +33,7 @@ export default function Layout({title, children}){
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <Link class={`${activeLink('/', router.pathname)}`} aria-current="page" href="/">Home</Link>
                             <Link class={`${activeLink('/pokemon', router.pathname)}`} aria-current="page" href="/pokemon">Pokemon</Link>
-                            <Link class={`${activeLink('/items', router.pathname)}`} aria-current="page" href="/items">Items</Link>
+                            <Link class={`${activeLink('/item', router.pathname)}`} aria-current="page" href="/item">Item</Link>
                         </ul>
                         <div className="row">
                             <div class="input-group">

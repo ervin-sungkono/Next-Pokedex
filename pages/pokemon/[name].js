@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export default function PokemonDetail({pokemon, species, evolutions}){
     return(
-        <Layout title={pokemon.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}>
+        <Layout title={`Pokedex | ${pokemon.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}`}>
             <div className="container min-vh-100">
                 <div className="row row-cols-md-2 mt-4 mb-4 justify-content-center gap-4 m-auto">
                     <div className="col-md-4">
