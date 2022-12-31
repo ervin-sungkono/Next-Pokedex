@@ -54,7 +54,7 @@ export default function PokemonDetail({pokemon, species, evolutions}){
 }
 
 export async function getStaticPaths(){
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1154")
+    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=200")
     const {results} = await res.json()
     const paths = results.map(result => {
         return{
@@ -84,7 +84,8 @@ function getEvolutionsList(chain){
 }
 
 export async function getStaticProps(context){
-    const name = context.params.name
+    const name = context?.params.name
+
     const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(res => res.json())
     const species = await fetch(pokemon.species.url).then(res => res.json())
     const {chain} = await fetch(species.evolution_chain.url).then(res => res.json())

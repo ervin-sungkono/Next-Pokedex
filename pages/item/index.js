@@ -63,7 +63,7 @@ async function getItems(results){
 }
 
 export async function getStaticProps(){
-    const {results} = await fetch("https://pokeapi.co/api/v2/item?limit=1607").then(res => res.json())
+    const {results} = await fetch("https://pokeapi.co/api/v2/item?limit=200").then(res => res.json())
 
     const items = await getItems(results)
 
