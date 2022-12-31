@@ -21,8 +21,8 @@ export default function PokemonDetail({pokemon, species, evolutions}){
                                 <div className="card-header fw-bold">Base Stats</div>
                                 <div className="card-body">
                                     <div className="row row-cols-2">
-                                        {pokemon.stats.map((stat) => (
-                                            <div className="col">
+                                        {pokemon.stats.map((stat, index) => (
+                                            <div className="col" key={index}>
                                                 <p className="fw-semibold mb-2">{stat.stat.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</p>
                                                 <p>{stat.base_stat}</p>
                                             </div>
@@ -35,8 +35,8 @@ export default function PokemonDetail({pokemon, species, evolutions}){
                 </div>
                 <div className="row">
                     <h2 className="text-white fw-bold mb-3">Evolutions</h2>
-                    {evolutions.map((evolution) => (
-                        <div className="col-md-4 mb-3">
+                    {evolutions.map((evolution, index) => (
+                        <div className="col-md-4 mb-3" key={index}>
                             <Link href={`/pokemon/${evolution.name}`}>
                                 <div class="card poke-card">
                                 <img src={evolution.image} class="card-img-top" alt="..."/>
@@ -59,7 +59,7 @@ export async function getStaticPaths(){
     const paths = results.map(result => {
         return{
             params:{
-                name : result.name
+                name : `${result.name}`
             }
         }
     })
@@ -86,7 +86,7 @@ function getEvolutionsList(chain){
 export async function getStaticProps(context){
     const name = context.params.name
     const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(res => res.json())
-    const species = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`).then(res => res.json())
+    const species = await fetch(pokemon.species.url).then(res => res.json())
     const {chain} = await fetch(species.evolution_chain.url).then(res => res.json())
 
     const evolutionsList = getEvolutionsList(chain)

@@ -32,8 +32,8 @@ export default function ItemsPage({items}){
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredItems.map(item => (
-                                    <tr class="">
+                                {filteredItems.map((item, index) => (
+                                    <tr class="" key={index}>
                                         <td scope="row"><img src={item.sprites.default} className="img-fluid"/></td>
                                         <td>{item.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</td>
                                         <td>{item.category.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</td>
