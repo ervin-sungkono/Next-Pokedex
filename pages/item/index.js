@@ -1,15 +1,27 @@
 import { useState } from "react"
 import Layout from "../../components/Layout"
+import Pagination from "../../components/Pagination"
+import { paginate } from "../../helpers/paginate"
+
+const PAGE_SIZE = 40
+const ITEM_COUNT = 1607
+const PAGES_COUNT = Math.ceil(ITEM_COUNT / PAGE_SIZE)
 
 export default function ItemsPage({items}){
     const [searchText, setSearchText] = useState("")
-    
     const searchItem = () =>{
         const text = document.getElementById('search-field').value
         setSearchText(text)
     }
 
+    const [currentPage, setPage] = useState(1)
+    const onPageChange = (page) => {
+        setPage(page)
+    }
+
     const filteredItems = items.filter((item) => item.name.replace('-', ' ').includes(searchText.toLowerCase()))
+
+    const paginateItems = paginate(filteredItems, currentPage, PAGE_SIZE)
 
     return(
         <>
@@ -18,7 +30,7 @@ export default function ItemsPage({items}){
                     <div className="row mb-4">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Enter item name" id="search-field"/>
-                            <button class="btn btn-outline-warning" type="button" id="search-btn" onClick={() => searchItem()}>Search Item</button>
+                            <button class="btn btn-warning" type="button" id="search-btn" onClick={() => searchItem()}>Search Item</button>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -32,17 +44,22 @@ export default function ItemsPage({items}){
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredItems.map((item, index) => (
-                                    <tr class="" key={index}>
-                                        <td scope="row"><img src={item.sprites.default} className="img-fluid"/></td>
-                                        <td>{item.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</td>
-                                        <td>{item.category.name.split('-').map((name) => name[0].toUpperCase() + name.substring(1)).join(' ')}</td>
-                                        <td>{item.effect_entries[0].effect}</td>
+                                {paginateItems.map((item, index) => (
+                                    <tr key={index}>
+                                        <td scope="row"><img src={item.sprites?.default} className="img-fluid"/></td>
+                                        <td>{item.name?.split('-').map((name) => name[0]?.toUpperCase() + name.substring(1)).join(' ')}</td>
+                                        <td>{item.category?.name?.split('-').map((name) => name[0]?.toUpperCase() + name.substring(1)).join(' ')}</td>
+                                        <td>{item.effect_entries[0]?.effect}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
+                    <Pagination
+                        pagesCount={Math.ceil(filteredItems.length / PAGE_SIZE)}
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                    />
                 </div>
             </Layout>
         </>
@@ -50,24 +67,39 @@ export default function ItemsPage({items}){
 }
 
 async function getItems(results){
-    const items = await Promise.all(results.map(async(result) => {
-        const {name, sprites, effect_entries, category} = await fetch(result.url).then(res => res.json())
-        return {
-            name : name,
-            sprites : sprites,
-            effect_entries: effect_entries,
-            category : category
-        }
-    }))
-    return items
+    const finalResults = []
+    for(let i = 0; i < PAGES_COUNT; i++){
+        const promises = []
+        const res = await fetch(`https://pokeapi.co/api/v2/item?limit=${PAGE_SIZE}&offset=${i * PAGE_SIZE}`)
+        const {results} = await res.json()
+        results.forEach((result) => {
+            promises.push(fetch(result.url).then(res => res.json()))
+        })
+        const items = await Promise.all(promises)
+            .then(items => items.map(item => {
+                return {
+                    name : item.name,
+                    sprites : item.sprites,
+                    effect_entries: item.effect_entries,
+                    category : item.category
+                }
+            }))  
+        items.forEach(item => finalResults.push(item))
+    }
+    return finalResults
 }
 
 export async function getStaticProps(){
-    const {results} = await fetch("https://pokeapi.co/api/v2/item?limit=200").then(res => res.json())
+    const items = await getItems()
 
-    const items = await getItems(results)
+    if(!items)
+    return {
+        notFound: true
+    }
 
     return {
-        props : {items : items}
+        props : {
+            items : items,
+        }
     }
 }
