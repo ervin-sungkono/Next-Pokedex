@@ -47,7 +47,8 @@ async function getAllPokemons(){
     const finalResults = []
     for(let i = 0; i < PAGES_COUNT; i++){
         const promises = []
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${PAGE_SIZE}&offset=${i * PAGE_SIZE}`)
+        const limit = (i === (PAGES_COUNT - 1)) ? (ITEM_COUNT - i * PAGE_SIZE) : PAGE_SIZE
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${i * PAGE_SIZE}`)
         const {results} = await res.json()
         results.forEach((result) => {
             promises.push(fetch(result.url).then(res => res.json()))

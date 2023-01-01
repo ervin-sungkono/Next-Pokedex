@@ -12,7 +12,7 @@ export default function Home({pokemons}) {
         <>
             <Layout title = "Pokedex">
                 <div className="container min-vh-100 d-flex flex-column justify-content-center align-items-center" >
-                    <h1 className="fw-bold display-3 text-white mb-4">Welcome to the Pokedex!</h1>
+                    <h1 className="fw-bold display-3 text-center text-white mb-4">Welcome to the Pokedex!</h1>
                     <a className="btn btn-lg btn-warning fw-bold" onClick={() => showRandomPokemon()}>Show Random Pokemon</a>
                 </div>
             </Layout>
